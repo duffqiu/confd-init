@@ -8,6 +8,7 @@ TimeoutStartSec=600
 EnvironmentFile=/etc/environment
 ExecStartPre=-/usr/bin/docker kill confdinit-%H
 ExecStartPre=-/usr/bin/docker rm confdinit-%H
+ExecStartPre=mkdir -p /home/core/confd/workspace/haproxy
 ExecStartPre=/usr/bin/docker pull duffqiu/confd-init:latest
 ExecStart=/usr/bin/docker run \
                               --name confdinit-%H \
