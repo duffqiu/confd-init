@@ -4,15 +4,17 @@ After=confd.service
 PartOf=confd.service
 
 [Service]
+TimeoutStartSec=600
 EnvironmentFile=/etc/environment
 ExecStartPre=-/usr/bin/docker kill confdinit-%H
 ExecStartPre=-/usr/bin/docker rm confdinit-%H
+ExecStartPre=/usr/bin/docker pull duffqiu/confd-init:latest
 ExecStart=/usr/bin/docker run \
                               --name confdinit-%H \
                               --hostname confdinit-%H.${DOMAIN_NAME} \
                               -v /home/core/confd/confd.d/:/etc/confd/confd.d/ \
                               -v /home/core/confd/templates:/etc/confd/templates/ \
-                              -e INSTANCE %H
+                              -e INSTANCE=%H \
                               duffqiu/confd-init:latest
 ExecStop=/usr/bin/docker stop confdinit-%H
 

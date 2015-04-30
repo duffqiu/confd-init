@@ -6,7 +6,7 @@ dest = \"/workspace/haproxy/haproxy.cfg\"
 keys = [
         \"/haproxy/$INSTANCE/apps/\"
 ]
-reload_cmd = \"echo restarting && /usr/bin/systemctl reload haproxy\" " > /home/core/confd/confd.d/haproxy.toml
+reload_cmd = \"echo restarting && /usr/bin/systemctl reload haproxy\" " > /etc/confd/confd.d/haproxy.toml
 
 /bin/printf "global
     daemon
@@ -26,4 +26,4 @@ backend servers
     {{range gets \"/haproxy/$INSTANCE/apps/*\"}}
     {{\$data := json .Value}}
       server {{\$data.host}} {{\$data.ip}} maxconn 32
-    {{end}}" > /home/core/confd/templates/haproxy.cfg.tmpl
+    {{end}}" > /etc/confd/templates/haproxy.cfg.tmpl
