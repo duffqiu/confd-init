@@ -1,0 +1,29 @@
+#!/bin/bash
+
+/bin/printf "[template]
+src = \"haproxy.cfg.tmpl\"
+dest = \"/workspace/haproxy/haproxy.cfg\"
+keys = [
+        \"/haproxy/$INSTANCE/apps/\"
+]
+reload_cmd = \"echo restarting && /usr/bin/systemctl reload haproxy\" " > /home/core/confd/confd.d/haproxy.toml
+
+/bin/printf "global
+    daemon
+    maxconn 256
+
+defaults
+    mode http
+    timeout connect 5000ms
+    timeout client 50000ms
+    timeout server 50000ms
+
+frontend http-in
+    bind *:80
+    default_backend servers
+
+backend servers
+    {{range gets \"/haproxy/$INSTANCE/apps/*\"}}
+    {{\$data := json .Value}}
+      server {{\$data.host}} {{\$data.ip}} maxconn 32
+    {{end}}" > /home/core/confd/templates/haproxy.cfg.tmpl
