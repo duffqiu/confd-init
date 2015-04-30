@@ -12,7 +12,7 @@ ExecStartPre=/usr/bin/docker pull duffqiu/confd-init:latest
 ExecStart=/usr/bin/docker run \
                               --name confdinit-%H \
                               --hostname confdinit-%H.${DOMAIN_NAME} \
-                              -v /home/core/confd/confd.d/:/etc/confd/confd.d/ \
+                              -v /home/core/confd/conf.d/:/etc/confd/conf.d/ \
                               -v /home/core/confd/templates:/etc/confd/templates/ \
                               -e INSTANCE=%H \
                               duffqiu/confd-init:latest

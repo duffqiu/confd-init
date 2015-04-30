@@ -6,7 +6,7 @@ dest = \"/workspace/haproxy/haproxy.cfg\"
 keys = [
         \"/haproxy/$INSTANCE/apps/\"
 ]
-reload_cmd = \"echo restarting && /usr/bin/systemctl reload haproxy\" " > /etc/confd/confd.d/haproxy.toml
+reload_cmd = \"echo restarting && /usr/bin/systemctl reload haproxy\" " > /etc/confd/conf.d/haproxy.toml
 
 /bin/printf "global
     daemon
